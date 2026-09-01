@@ -4,6 +4,24 @@ A beautiful, keyboard-driven todo app that appears with a single shortcut. Perfe
 
 ![Quick Tasks App](https://img.shields.io/badge/electron-28.0.0-blue) ![License](https://img.shields.io/badge/license-MIT-green)
 
+---
+
+## 🎁 For Non-Technical Users
+
+**Don't know GitHub or programming? No problem!**
+
+👉 **[Read the Simple Installation Guide](SIMPLE-INSTALL.md)** - No command line needed!
+
+**Quick summary:**
+1. Download `Quick-Tasks-Portable.zip` from the [Releases](https://github.com/Lukasz-baldyga-ai/Electron-todo/releases) page
+2. Extract the ZIP file anywhere on your computer
+3. Double-click `Quick Tasks.exe` to run
+4. Press `1` or `Ctrl+Shift+T` anytime to show/hide it!
+
+That's it! Your tasks auto-save and the app runs from the right side of your screen. ✨
+
+---
+
 ## ✨ Features
 
 - 🎯 **Global Keyboard Shortcut** - Press `Ctrl+Shift+T` (or `1` key) anywhere to show/hide
