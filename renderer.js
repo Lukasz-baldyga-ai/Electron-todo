@@ -105,13 +105,11 @@ function groupTasksByDate(taskList) {
   
   return sortedGrouped;
 }
-filter(t => !t.completed).length;
-  const completed = tasks.filter(t => t.completed).length;
-  
-  taskCount.textContent = `${total} active ${total === 1 ? 'task' : 'tasks'}`;
-  toggleCompletedBtn.textContent = showCompleted 
-    ? `Hide Completed (${completed})` 
-    : `Show Completed (${completed})
+
+function formatDateLabel(dateString) {
+  const date = new Date(dateString);
+  const today = new Date();
+  const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
   
   // Reset time parts for comparison
