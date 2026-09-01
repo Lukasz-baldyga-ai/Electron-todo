@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-wrap: break-word;
 }
 
 body {
@@ -9,10 +10,11 @@ body {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .container {
-  max-width: 500px;
+  max-width: 650px;
   margin: 0 auto;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -111,6 +113,7 @@ h1 {
 .stats {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 15px;
   padding: 10px 15px;
   background: rgba(102, 126, 234, 0.1);
@@ -119,10 +122,38 @@ h1 {
   color: #666;
 }
 
+.toggle-completed {
+  background: rgba(102, 126, 234, 0.8);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+
+.toggle-completed:hover {
+  background: rgba(102, 126, 234, 1);
+  transform: translateY(-1px);
+}
+
+.date-separator {
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+  margin: 20px 0 10px 0;
+  padding: 8px 12px;
+  background: rgba(102, 126, 234, 0.08);
+  border-radius: 8px;
+  border-left: 3px solid #667eea;
+}
+
 .task-list {
   list-style: none;
-  max-height: 400px;
+  max-height: 450px;
   overflow-y: auto;
+  overflow-x: hidden;
   margin-bottom: 20px;
 }
 
@@ -192,6 +223,9 @@ h1 {
   font-size: 16px;
   color: #333;
   word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.4;
 }
 
 .delete-btn {

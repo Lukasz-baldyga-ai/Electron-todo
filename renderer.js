@@ -1,11 +1,12 @@
 let tasks = [];
+let showCompleted = false;
 
 // DOM Elements
 const taskInput = document.getElementById('taskInput');
 const addBtn = document.getElementById('addBtn');
 const taskList = document.getElementById('taskList');
 const taskCount = document.getElementById('taskCount');
-const completedCount = document.getElementById('completedCount');
+const toggleCompletedBtn = document.getElementById('toggleCompleted');
 const settingsBtn = document.getElementById('settingsBtn');
 const shortcutDisplay = document.getElementById('shortcutDisplay');
 
@@ -29,36 +30,112 @@ function updateShortcutDisplay(shortcut) {
 function renderTasks() {
   taskList.innerHTML = '';
 
-  if (tasks.length === 0) {
-    taskList.innerHTML = '<div class="empty-state">No tasks yet. Add one above!</div>';
+  // Filter tasks based on showCompleted toggle
+  const visibleTasks = showCompleted 
+    ? tasks 
+    : tasks.filter(t => !t.completed);
+
+  if (visibleTasks.length === 0) {
+    const message = showCompleted 
+      ? 'No tasks yet. Add one above!'
+      : 'No active tasks! Add one above or show completed tasks.';
+    taskList.innerHTML = `<div class="empty-state">${message}</div>`;
     updateStats();
     return;
   }
 
-  tasks.forEach((task, index) => {
-    const li = document.createElement('li');
-    li.className = `task-item ${task.completed ? 'completed' : ''}`;
+  // Group tasks by date
+  const tasksByDate = groupTasksByDate(visibleTasks);
+  
+  // Render tasks grouped by date
+  Object.keys(tasksByDate).forEach(dateKey => {
+    const dateTasks = tasksByDate[dateKey];
     
-    li.innerHTML = `
-      <input 
-        type="checkbox" 
-        class="task-checkbox" 
-        ${task.completed ? 'checked' : ''}
-        data-index="${index}"
-      >
-      <span class="task-text">${escapeHtml(task.text)}</span>
-      <button class="delete-btn" data-index="${index}">Delete</button>
-    `;
+    // Add date separator
+    const dateDiv = document.createElement('div');
+    dateDiv.className = 'date-separator';
+    dateDiv.textContent = formatDateLabel(dateKey);
+    taskList.appendChild(dateDiv);
     
-    taskList.appendChild(li);
+    // Add tasks for this date
+    dateTasks.forEach((task, taskIndex) => {
+      const originalIndex = tasks.indexOf(task);
+      const li = document.createElement('li');
+      li.className = `task-item ${task.completed ? 'completed' : ''}`;
+      
+      li.innerHTML = `
+        <input 
+          type="checkbox" 
+          class="task-checkbox" 
+          ${task.completed ? 'checked' : ''}
+          data-index="${originalIndex}"
+        >
+        <span class="task-text">${escapeHtml(task.text)}</span>
+        <button class="delete-btn" data-index="${originalIndex}">Delete</button>
+      `;
+      
+      taskList.appendChild(li);
+    });
   });
 
   updateStats();
   attachEventListeners();
 }
 
+function groupTasksByDate(taskList) {
+  const grouped = {};
+  
+  taskList.forEach(task => {
+    const date = new Date(task.createdAt);
+    const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
+    
+    if (!grouped[dateKey]) {
+      grouped[dateKey] = [];
+    }
+    grouped[dateKey].push(task);
+  });
+  
+  // Sort dates descending (newest first)
+  const sortedGrouped = {};
+  Object.keys(grouped)
+    .sort((a, b) => new Date(b) - new Date(a))
+    .forEach(key => {
+      sortedGrouped[key] = grouped[key];
+    });
+  
+  return sortedGrouped;
+}
+filter(t => !t.completed).length;
+  const completed = tasks.filter(t => t.completed).length;
+  
+  taskCount.textContent = `${total} active ${total === 1 ? 'task' : 'tasks'}`;
+  toggleCompletedBtn.textContent = showCompleted 
+    ? `Hide Completed (${completed})` 
+    : `Show Completed (${completed})
+  yesterday.setDate(yesterday.getDate() - 1);
+  
+  // Reset time parts for comparison
+  const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const yesterdayOnly = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+  
+  if (dateOnly.getTime() === todayOnly.getTime()) {
+    return '📅 Today';
+  } else if (dateOnly.getTime() === yesterdayOnly.getTime()) {
+    return '📆 Yesterday';
+  } else {
+    const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+    return `📋 ${date.toLocaleDateString('en-US', options)}`;
+  }
+}
+
 function attachEventListeners() {
   // Checkbox listeners
+toggleCompletedBtn.addEventListener('click', () => {
+  showCompleted = !showCompleted;
+  renderTasks();
+});
+
   document.querySelectorAll('.task-checkbox').forEach(checkbox => {
     checkbox.addEventListener('change', (e) => {
       const index = parseInt(e.target.dataset.index);
