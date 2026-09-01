@@ -131,11 +131,6 @@ filter(t => !t.completed).length;
 
 function attachEventListeners() {
   // Checkbox listeners
-toggleCompletedBtn.addEventListener('click', () => {
-  showCompleted = !showCompleted;
-  renderTasks();
-});
-
   document.querySelectorAll('.task-checkbox').forEach(checkbox => {
     checkbox.addEventListener('change', (e) => {
       const index = parseInt(e.target.dataset.index);
