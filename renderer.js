@@ -181,11 +181,13 @@ async function saveTasks() {
 }
 
 function updateStats() {
-  const total = tasks.length;
+  const total = tasks.filter(t => !t.completed).length;
   const completed = tasks.filter(t => t.completed).length;
   
-  taskCount.textContent = `${total} ${total === 1 ? 'task' : 'tasks'}`;
-  completedCount.textContent = `${completed} completed`;
+  taskCount.textContent = `${total} active ${total === 1 ? 'task' : 'tasks'}`;
+  toggleCompletedBtn.textContent = showCompleted 
+    ? `Hide Completed (${completed})` 
+    : `Show Completed (${completed})`;
 }
 
 function escapeHtml(text) {
@@ -205,6 +207,11 @@ taskInput.addEventListener('keypress', (e) => {
 
 settingsBtn.addEventListener('click', () => {
   window.electronAPI.openSettings();
+});
+
+toggleCompletedBtn.addEventListener('click', () => {
+  showCompleted = !showCompleted;
+  renderTasks();
 });
 
 // Refresh shortcut display when window regains focus

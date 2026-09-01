@@ -8,14 +8,19 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  padding: 15px;
   overflow-x: hidden;
   overflow-y: auto;
+  height: 100vh;
+  margin: 0;
 }
 
 .container {
-  max-width: 650px;
+  max-width: 470px;
   margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -116,10 +121,10 @@ h1 {
   align-items: center;
   margin-bottom: 15px;
   padding: 10px 15px;
-  background: rgba(102, 126, 234, 0.1);
+  background: transparent;
   border-radius: 10px;
   font-size: 14px;
-  color: #666;
+  color: #333;
 }
 
 .toggle-completed {
@@ -151,10 +156,10 @@ h1 {
 
 .task-list {
   list-style: none;
-  max-height: 450px;
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .task-list::-webkit-scrollbar {

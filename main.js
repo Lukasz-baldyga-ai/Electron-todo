@@ -6,9 +6,15 @@ const store = new Store();
 let mainWindow = null;
 
 function createWindow() {
+  const { screen } = require('electron');
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+  
   mainWindow = new BrowserWindow({
-    width: 700,
-    height: 700,
+    width: 500,
+    height: height,
+    x: width - 500,
+    y: 0,
     frame: true,
     resizable: true,
     alwaysOnTop: true,
@@ -35,8 +41,11 @@ function toggleWindow() {
   if (mainWindow.isVisible()) {
     mainWindow.hide();
   } else {
+    const { screen } = require('electron');
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const { width, height } = primaryDisplay.workAreaSize;
+    mainWindow.setBounds({ x: width - 500, y: 0, width: 500, height: height });
     mainWindow.show();
-    mainWindow.center();
     mainWindow.focus();
   }
 }
