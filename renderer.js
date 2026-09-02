@@ -1,5 +1,6 @@
 let tasks = [];
 let showCompleted = false;
+let collapsedDates = {}; // Track which date groups are collapsed
 
 // DOM Elements
 const taskInput = document.getElementById('taskInput');
@@ -16,6 +17,11 @@ async function init() {
   const shortcut = await window.electronAPI.getShortcut();
   updateShortcutDisplay(shortcut);
   renderTasks();
+  
+  // Listen for shortcut updates from main process
+  window.electronAPI.onShortcutUpdated((newShortcut) => {
+    updateShortcutDisplay(newShortcut);
+  });
 }
 
 function updateShortcutDisplay(shortcut) {
@@ -50,32 +56,45 @@ function renderTasks() {
   // Render tasks grouped by date
   Object.keys(tasksByDate).forEach(dateKey => {
     const dateTasks = tasksByDate[dateKey];
+    const isCollapsed = collapsedDates[dateKey] || false;
     
     // Add date separator
     const dateDiv = document.createElement('div');
     dateDiv.className = 'date-separator';
-    dateDiv.textContent = formatDateLabel(dateKey);
+    dateDiv.style.cursor = 'pointer';
+    dateDiv.dataset.dateKey = dateKey;
+    
+    const arrow = isCollapsed ? '▶' : '▼';
+    dateDiv.textContent = `${arrow} ${formatDateLabel(dateKey)}`;
+    
+    dateDiv.addEventListener('click', () => {
+      collapsedDates[dateKey] = !collapsedDates[dateKey];
+      renderTasks();
+    });
+    
     taskList.appendChild(dateDiv);
     
-    // Add tasks for this date
-    dateTasks.forEach((task, taskIndex) => {
-      const originalIndex = tasks.indexOf(task);
-      const li = document.createElement('li');
-      li.className = `task-item ${task.completed ? 'completed' : ''}`;
-      
-      li.innerHTML = `
-        <input 
-          type="checkbox" 
-          class="task-checkbox" 
-          ${task.completed ? 'checked' : ''}
-          data-index="${originalIndex}"
-        >
-        <span class="task-text">${escapeHtml(task.text)}</span>
-        <button class="delete-btn" data-index="${originalIndex}">Delete</button>
-      `;
-      
-      taskList.appendChild(li);
-    });
+    // Add tasks for this date only if not collapsed
+    if (!isCollapsed) {
+      dateTasks.forEach((task, taskIndex) => {
+        const originalIndex = tasks.indexOf(task);
+        const li = document.createElement('li');
+        li.className = `task-item ${task.completed ? 'completed' : ''}`;
+        
+        li.innerHTML = `
+          <input 
+            type="checkbox" 
+            class="task-checkbox" 
+            ${task.completed ? 'checked' : ''}
+            data-index="${originalIndex}"
+          >
+          <span class="task-text">${escapeHtml(task.text)}</span>
+          <button class="delete-btn" data-index="${originalIndex}">Delete</button>
+        `;
+        
+        taskList.appendChild(li);
+      });
+    }
   });
 
   updateStats();
