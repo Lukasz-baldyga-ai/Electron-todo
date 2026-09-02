@@ -13,10 +13,10 @@ A beautiful, keyboard-driven todo app that appears with a single shortcut. Perfe
 👉 **[Read the Simple Installation Guide](SIMPLE-INSTALL.md)** - No command line needed!
 
 **Quick summary:**
-1. Download `Quick-Tasks-Portable.zip` from the [Releases](https://github.com/Lukasz-baldyga-ai/Electron-todo/releases) page
+1. Download `Electron-v1.1.0.zip` from the [Releases](https://github.com/Lukasz-baldyga-ai/Electron-todo/releases) page
 2. Extract the ZIP file anywhere on your computer
-3. Double-click `Quick Tasks.exe` to run
-4. Press `1` or `Ctrl+Shift+T` anytime to show/hide it!
+3. Double-click `Electron.exe` to run
+4. Press `Space+1` or `Ctrl+Shift+T` anytime to show/hide it!
 
 That's it! Your tasks auto-save and the app runs from the right side of your screen. ✨
 
@@ -24,10 +24,12 @@ That's it! Your tasks auto-save and the app runs from the right side of your scr
 
 ## ✨ Features
 
-- 🎯 **Global Keyboard Shortcut** - Press `Ctrl+Shift+T` (or `1` key) anywhere to show/hide
+- 🎯 **Global Keyboard Shortcut** - Press `Space+1` or `Ctrl+Shift+T` anywhere to show/hide
 - 💾 **Auto-Save** - All tasks saved automatically to local JSON file
 - 🎨 **Modern UI** - Beautiful gradient design with smooth animations
-- ⚙️ **Customizable** - Change keyboard shortcut in settings
+- ⚙️ **Customizable Shortcuts** - Change keyboard shortcut in settings with real-time validation
+- 📅 **Collapsible Day Groups** - Organize tasks by date, collapse/expand groups with one click
+- 🔄 **Auto-Startup** - App automatically starts on Windows startup (hidden)
 - 🚀 **Lightweight** - Fast startup, minimal resource usage
 - 🔒 **Privacy-First** - All data stored locally, no cloud sync
 - ✅ **Simple Workflow** - Add, check, delete - that's it!
@@ -44,17 +46,20 @@ That's it! Your tasks auto-save and the app runs from the right side of your scr
 ### For End Users (Download & Run)
 
 1. **Download** the latest release for your platform:
-   - Windows: `Quick-Tasks-Setup.exe` or `Quick-Tasks-Portable.exe`
-   - macOS: `Quick-Tasks.dmg`
-   - Linux: `Quick-Tasks.AppImage` or `.deb`
+   - Windows: `Electron-v1.1.0.zip` (portable executable)
+   - macOS: `Electron.dmg`
+   - Linux: `Electron.AppImage` or `.deb`
 
-2. **Install** and run the application
+2. **Extract & Run**:
+   - Extract the ZIP file anywhere on your computer
+   - Double-click `Electron.exe` to launch
 
 3. **Use** the app:
-   - Press `Ctrl+Shift+T` to show the app
+   - Press `Space+1` or `Ctrl+Shift+T` to show/hide
    - Type your task and press `Enter`
    - Click checkbox to mark complete
-   - Press `Ctrl+Shift+T` again to hide
+   - Click date headers to collapse/expand task groups
+   - Press `Space+1` or `Ctrl+Shift+T` again to hide
 
 ### For Developers (Build from Source)
 
@@ -87,7 +92,7 @@ Build distribution packages for your platform:
 npm run build
 
 # Or build for specific platforms
-npm run build:win      # Windows (NSIS installer + portable)
+npm run build:win      # Windows (portable executable)
 npm run build:mac      # macOS (.dmg)
 npm run build:linux    # Linux (AppImage + deb)
 
@@ -97,28 +102,37 @@ npm run pack
 
 Built files will be in the `dist/` folder.
 
+**Note:** GitHub Actions automatically builds all platforms when you push a tag (e.g., `v1.1.0`). See [BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md) for details.
+
 ## ⌨️ Keyboard Shortcuts
 
 | Shortcut | Action |
 |----------|--------|
-| `Ctrl+Shift+T` | Show/Hide app (default, customizable) |
+| `Space+1` or `Ctrl+Shift+T` | Show/Hide app (default, customizable) |
 | `Enter` | Add new task |
 | `Escape` | Close settings |
+| Click date header | Collapse/expand task group for that day |
 
 ## ⚙️ Configuration
 
 ### Change Keyboard Shortcut
 
-1. Click the ⚙️ icon in the app
-2. Enter your preferred shortcut (e.g., `Alt+Space`, `CommandOrControl+K`)
-3. Click "Save Changes"
-4. Restart the app
+1. Press `Space+1` or `Ctrl+Shift+T` to open the app
+2. Click the ⚙️ settings icon
+3. Enter your preferred shortcut (e.g., `Alt+Space`, `CommandOrControl+K`)
+4. Click "Save Changes" - the app validates the shortcut in real-time
+5. Press the global shortcut to show/hide the app with your new key
 
 **Shortcut Format Examples:**
 - `CommandOrControl+Shift+T` (works on both Windows/Mac)
 - `Alt+Space`
 - `CommandOrControl+\`` (backtick)
 - `Super+T` (Linux)
+- `Space+1` (space + number key)
+
+**Auto-Startup:**
+- On Windows, the app automatically starts hidden when you log in
+- Disable in settings or Windows startup folder if desired
 
 ### Data Storage
 
@@ -145,9 +159,9 @@ Electron-todo/
 
 ### Tech Stack
 
-- **Electron 28** - Desktop framework
-- **electron-store** - Data persistence
-- **electron-builder** - Distribution packaging
+- **Electron 28.3.3** - Desktop framework
+- **electron-store 8.1.0** - Data persistence
+- **electron-builder 24.9.1** - Distribution packaging
 - **Vanilla JS** - No frameworks needed!
 
 ### Development Commands
@@ -183,12 +197,33 @@ Contributions are welcome! Here's how:
 
 MIT License - feel free to use this project however you like!
 
+## � Version History
+
+### v1.1.0 (Latest)
+✨ **New Features:**
+- ✅ Collapsible day groups - organize tasks by date with one-click collapse/expand
+- ✅ Custom keyboard shortcut support with real-time validation
+- ✅ Auto-startup on Windows - app launches hidden when you log in
+- ✅ Improved settings window - cleaner UI with no scrolling needed
+
+🐛 **Fixes:**
+- Fixed settings window height to eliminate scrolling
+- Improved shortcut registration reliability with retry logic
+- Enhanced error messages for invalid shortcuts
+
+---
+
 ## 🐛 Troubleshooting
 
 ### Windows: Shortcut not working
 - Run the app as Administrator once
 - Check if another app is using the same shortcut
 - Try a different shortcut combination
+- Try `Space+1` as an alternative default shortcut
+
+### Windows: App doesn't start on login
+- Check that the app was added to Windows Startup folder
+- Go to Settings → Apps → Startup and enable "Electron"
 
 ### macOS: App can't be opened
 - Right-click the app → "Open"
@@ -196,8 +231,8 @@ MIT License - feel free to use this project however you like!
 
 ### Linux: AppImage won't run
 ```bash
-chmod +x Quick-Tasks.AppImage
-./Quick-Tasks.AppImage
+chmod +x Electron.AppImage
+./Electron.AppImage
 ```
 
 ### Data not saving
@@ -207,8 +242,9 @@ chmod +x Quick-Tasks.AppImage
 
 ## 💬 Support
 
-- **Issues**: [GitHub Issues](https://github.com/YOUR-USERNAME/Electron-todo/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/YOUR-USERNAME/Electron-todo/discussions)
+- **Issues**: [GitHub Issues](https://github.com/Lukasz-baldyga-ai/Electron-todo/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Lukasz-baldyga-ai/Electron-todo/discussions)
+- **Releases**: [GitHub Releases](https://github.com/Lukasz-baldyga-ai/Electron-todo/releases)
 
 ## 🙏 Acknowledgments
 
